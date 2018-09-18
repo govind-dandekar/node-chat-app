@@ -21,13 +21,14 @@ io.on('connection', (socket) => {
 
   socket.on('createMessage', (message) => {
     console.log('Server received a new message', message)
+    //io.emit -- emits to every single connection
+    io.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    })
   })
 
-  socket.emit('newMessage', {
-    from: 'Govind',
-    text: 'sounds good to me',
-    createdAt: 123
-  })
 
   socket.on('disconnect', () => {
     console.log('Disconnected from server');
