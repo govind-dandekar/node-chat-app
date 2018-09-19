@@ -26,8 +26,9 @@ io.on('connection', (socket) => {
   //socket.broadcast.emit -- from Admit text: 'new user joined' -- from, text, createdAt
   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'))
 
-  socket.on('createMessage', (message) => {
+  socket.on('createMessage', (message, callback) => {
     console.log('Server received a new message', message)
+    callback('This is from the server');
 
     io.emit('newMessage', generateMessage(message.from, message.text))
   })
