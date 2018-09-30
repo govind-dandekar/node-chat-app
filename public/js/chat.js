@@ -20,12 +20,33 @@ function scrollToBottom () {
 } //run every time we send a new message
 
 socket.on('connect', function() {
-  console.log('Connected to server');
+  var params = jQuery.deparam(window.location.search);
+
+  socket.emit('join', params, function(err) {
+    if(err){
+      alert(err);
+      window.location.href = '/'; //redirect to root page
+    } else {
+      console.log('No error');
+    }
+  }); //client emits; server sets up rooms
+
 });
 
 socket.on('disconnect', function() {
   console.log('Disconnected from server');
 });
+
+//users = array
+socket.on('updateUserList', function(users) {
+  var ol = jQuery('<ol></ol>');
+
+  users.forEach(function(user) {
+    ol.append(jQuery('<li></li>').text(user))
+  })
+
+  jQuery('#users').html(ol);
+})
 
 socket.on('newMessage', function(message) {
 
